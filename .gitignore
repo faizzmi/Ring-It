@@ -1,0 +1,155 @@
+# =============================================================================
+# Ring-It — Monorepo .gitignore
+# Vue 3 + FastAPI + Supabase + GCP
+# =============================================================================
+
+
+# =============================================================================
+# ENVIRONMENT & SECRETS — never commit these
+# =============================================================================
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+*.pem
+*.key
+*.p12
+*.pfx
+service-account*.json
+gcp-credentials*.json
+
+
+# =============================================================================
+# FRONTEND (Vue 3 / Vite / Node)
+# =============================================================================
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.vite/
+frontend/.cache/
+frontend/coverage/
+frontend/*.local
+
+# Vite build artifacts
+frontend/.vite-ssg-temp/
+
+# Test output
+frontend/__snapshots__/
+
+# TypeScript build info
+frontend/*.tsbuildinfo
+frontend/tsconfig.tsbuildinfo
+
+
+# =============================================================================
+# BACKEND (Python / FastAPI)
+# =============================================================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Virtual environments
+backend/.venv/
+backend/venv/
+backend/env/
+backend/ENV/
+.venv/
+venv/
+
+# Distribution / packaging
+backend/dist/
+backend/build/
+backend/*.egg-info/
+backend/.eggs/
+
+# Test & coverage
+backend/.pytest_cache/
+backend/htmlcov/
+backend/.coverage
+backend/coverage.xml
+backend/*.coveragerc
+
+# mypy / ruff / linting cache
+backend/.mypy_cache/
+backend/.ruff_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Logs
+backend/logs/
+*.log
+
+# Alembic (keep versions, ignore pyc inside)
+backend/alembic/versions/__pycache__/
+
+
+# =============================================================================
+# DOCKER
+# =============================================================================
+# Docker override files (local dev overrides only)
+docker-compose.override.yml
+
+
+# =============================================================================
+# EDITORS & IDEs
+# =============================================================================
+# VS Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# JetBrains (PyCharm, WebStorm)
+.idea/
+*.iml
+*.iws
+
+# Vim / Neovim
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+
+# =============================================================================
+# CLOUD & INFRASTRUCTURE
+# =============================================================================
+# Terraform state (use remote state — never commit locally)
+infra/.terraform/
+infra/*.tfstate
+infra/*.tfstate.backup
+infra/*.tfplan
+infra/.terraform.lock.hcl
+
+# GCP
+.gcloudignore
+
+
+# =============================================================================
+# MISC
+# =============================================================================
+# Temp files
+*.tmp
+*.temp
+*.bak
+
+# OS package locks (keep only the one your team uses)
+# Uncomment what you DON'T use:
+# frontend/package-lock.json  # if using yarn
+# frontend/yarn.lock          # if using npm

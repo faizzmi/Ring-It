@@ -1,0 +1,144 @@
+/* ════════════════════════════════════════════════
+   RING-IT · SOVEREIGN STYLE SYSTEM
+   main.scss — Single source of truth for all
+   shared styles, components, and animations.
+════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+@layer vuetify-overrides {
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--color-void, #080808);
+    color: var(--color-plat, #E0E0E0);
+    font-family: var(--font-body, 'DM Sans', sans-serif);
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a  { text-decoration: none; color: inherit; }
+  p, h1, h2, h3, h4, h5, h6 { margin: 0; }
+  button { border: none; background: none; cursor: pointer; padding: 0; font-family: inherit; }
+  input, textarea, select { font-family: inherit; }
+  img { display: block; max-width: 100%; }
+  code, pre, .v-code { font-family: var(--font-mono, 'DM Mono', monospace); }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: var(--color-iron, #121214); }
+  ::-webkit-scrollbar-thumb { background: var(--color-iron-3, #222226); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-gun, #757575); }
+  :focus-visible { outline: 1.5px solid var(--color-ox, #800020); outline-offset: 3px; border-radius: 3px; }
+
+  /* Typography */
+  .t-display { font-family: var(--font-heading); font-weight: 800; letter-spacing: -0.03em; line-height: 1.06; color: var(--color-plat); }
+  .t-mono    { font-family: var(--font-mono); }
+  .t-overline { font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--color-ox); }
+  .t-label   { font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--color-gun); }
+  .t-body    { font-family: var(--font-body); color: var(--color-gun); line-height: 1.75; }
+  .t-accent  { color: var(--color-ox); }
+  .t-plat    { color: var(--color-plat); }
+  .t-gun     { color: var(--color-gun); }
+  .t-green   { color: var(--color-grn); }
+  .t-red     { color: #ef5350; }
+  .t-amber   { color: var(--color-amb); }
+
+  /* Glass Card */
+  .sov-card { background: var(--color-glass-bg); backdrop-filter: blur(20px) saturate(1.5); -webkit-backdrop-filter: blur(20px) saturate(1.5); border: 1px solid var(--color-glass-bo); border-radius: var(--radius-md); position: relative; overflow: hidden; }
+  .sov-card::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(135deg, rgba(255,255,255,0.035) 0%, transparent 55%); pointer-events: none; }
+  .sov-card::after  { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18) 50%, transparent); pointer-events: none; }
+  .sov-card--ox     { border-color: var(--color-ox-md); background: rgba(128,0,32,0.07); }
+  .sov-card--hover  { transition: transform var(--duration-base) var(--ease-sov), box-shadow var(--duration-base) var(--ease-sov); }
+  .sov-card--hover:hover { transform: translateY(-4px); box-shadow: 0 18px 45px rgba(0,0,0,0.4), 0 0 0 1px var(--color-ox-md); }
+
+  /* Buttons */
+  .sov-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase; cursor: pointer; transition: all var(--duration-base) var(--ease-sov); white-space: nowrap; border: none; }
+  .sov-btn--primary { background: rgba(128,0,32,0.88); border: 1px solid rgba(128,0,32,0.65); color: rgba(224,224,224,0.95); box-shadow: 0 4px 18px rgba(128,0,32,0.28), inset 0 1px 0 rgba(255,255,255,0.07); }
+  .sov-btn--primary:hover { background: var(--color-ox); box-shadow: 0 6px 26px rgba(128,0,32,0.48); transform: translateY(-1px); }
+  .sov-btn--ghost { background: rgba(224,224,224,0.04); border: 1px solid var(--color-glass-bo); color: var(--color-gun); }
+  .sov-btn--ghost:hover { color: var(--color-plat); background: rgba(224,224,224,0.07); }
+  .sov-btn--sm   { padding: 7px 15px; font-size: 10px; }
+  .sov-btn--lg   { padding: 13px 26px; font-size: 12px; }
+  .sov-btn--icon { padding: 8px; width: 36px; height: 36px; justify-content: center; }
+
+  /* Chips */
+  .sov-chip { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.8px; padding: 3px 9px; border-radius: 100px; }
+  .sov-chip--green { background: rgba(76,175,80,0.10);  border: 1px solid rgba(76,175,80,0.22);  color: var(--color-grn); }
+  .sov-chip--red   { background: rgba(176,0,32,0.10);   border: 1px solid rgba(176,0,32,0.22);   color: #ef5350; }
+  .sov-chip--amber { background: rgba(251,140,0,0.08);  border: 1px solid rgba(251,140,0,0.18);  color: var(--color-amb); }
+  .sov-chip--ox    { background: var(--color-ox-lo);    border: 1px solid var(--color-ox-md);    color: rgba(224,224,224,0.8); }
+  .sov-chip--ghost { background: rgba(224,224,224,0.04); border: 1px solid var(--color-glass-bo); color: var(--color-gun); }
+
+  /* Nudge alerts */
+  .sov-nudge { display: flex; align-items: center; gap: 8px; padding: 8px 11px; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 9px; line-height: 1.5; }
+  .sov-nudge--warn    { background: var(--color-ox-lo);  border: 1px solid var(--color-ox-md);            color: rgba(224,224,224,0.6); }
+  .sov-nudge--ok      { background: var(--color-grn-lo); border: 1px solid rgba(76,175,80,0.2);           color: var(--color-grn); }
+  .sov-nudge--caution { background: var(--color-amb-lo); border: 1px solid rgba(251,140,0,0.2);           color: var(--color-amb); }
+
+  /* Progress track */
+  .sov-track { width: 100%; height: 4px; background: var(--color-iron-2, #1A1A1E); border-radius: 2px; overflow: hidden; }
+  .sov-track__fill { height: 100%; border-radius: 2px; transition: width var(--duration-slow) var(--ease-sov); }
+  .sov-track__fill--green { background: var(--color-grn); }
+  .sov-track__fill--ox    { background: var(--color-ox); }
+  .sov-track__fill--amber { background: var(--color-amb); }
+  .sov-track__fill--red   { background: var(--color-red); }
+
+  /* Divider */
+  .sov-divider { border: none; border-top: 1px solid var(--color-glass-bo); margin: 16px 0; }
+
+  /* Nav link */
+  .sov-nav-link { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--color-gun); padding: 6px 12px; border-radius: var(--radius-sm); transition: color var(--duration-fast), background var(--duration-fast); display: flex; align-items: center; gap: 8px; }
+  .sov-nav-link:hover  { color: var(--color-plat); background: rgba(224,224,224,0.04); }
+  .sov-nav-link.active { color: var(--color-ox); background: var(--color-ox-lo); }
+
+  /* Container & Section */
+  .sov-container { width: 100%; max-width: 1160px; margin: 0 auto; padding: 0 20px; }
+  @media (min-width: 640px)  { .sov-container { padding: 0 32px; } }
+  @media (min-width: 1024px) { .sov-container { padding: 0 48px; } }
+  .sov-section { padding: 76px 0; position: relative; z-index: 1; }
+  .sov-section--alt { background: rgba(18,18,20,0.35); border-top: 1px solid var(--color-glass-bo); border-bottom: 1px solid var(--color-glass-bo); }
+  @media (min-width: 900px) { .sov-section { padding: 96px 0; } }
+
+  /* Amount display */
+  .sov-amount { font-family: var(--font-heading); font-weight: 700; letter-spacing: -0.03em; line-height: 1; color: var(--color-plat); }
+  .sov-amount__ccy { font-family: var(--font-mono); font-size: 0.6em; color: var(--color-gun); vertical-align: 0.15em; margin-right: 3px; }
+  .sov-amount--positive { color: var(--color-grn); }
+  .sov-amount--negative { color: #ef5350; }
+
+  /* DSR grades */
+  .dsr-green  { color: var(--color-grn); }
+  .dsr-yellow { color: var(--color-amb); }
+  .dsr-red    { color: var(--color-red); }
+
+  /* Vuetify input tweaks */
+  .v-field__outline { --v-field-border-opacity: 0.15 !important; }
+  .v-field--focused .v-field__outline { --v-field-border-opacity: 1 !important; }
+
+  /* Ambient background system */
+  .sov-ambient { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .sov-orb { position: absolute; border-radius: 50%; filter: blur(90px); animation: sovOrbFloat 14s ease-in-out infinite; }
+  .sov-orb--1 { width: 50vw; height: 50vw; background: rgba(128,0,32,0.22); top: -12%; right: -8%; }
+  .sov-orb--2 { width: 38vw; height: 38vw; background: rgba(128,0,32,0.10); bottom: 10%; left: -6%; animation-duration: 18s; animation-direction: reverse; }
+  .sov-grid-overlay { position: absolute; inset: 0; background-image: linear-gradient(rgba(224,224,224,0.022) 1px, transparent 1px), linear-gradient(90deg, rgba(224,224,224,0.022) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 0%, transparent 75%); }
+  @keyframes sovOrbFloat { 0%,100%{transform:translate(0,0) scale(1)} 45%{transform:translate(3%,4%) scale(1.04)} 70%{transform:translate(-2%,-2%) scale(0.97)} }
+
+  .sov-pulse { width: 7px; height: 7px; background: var(--color-ox); border-radius: 50%; box-shadow: 0 0 6px rgba(128,0,32,0.9); animation: sovPulse 2.5s ease-in-out infinite; flex-shrink: 0; }
+  @keyframes sovPulse { 0%,100%{box-shadow:0 0 4px rgba(128,0,32,0.9)} 50%{box-shadow:0 0 14px rgba(128,0,32,1),0 0 22px rgba(128,0,32,0.5)} }
+
+  .sov-blink { animation: sovBlink 1.1s step-end infinite; }
+  @keyframes sovBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .sov-float       { animation: sovFloatY 5s ease-in-out infinite; }
+  .sov-float--slow { animation-duration: 7s; animation-direction: reverse; }
+  @keyframes sovFloatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+
+  .sov-fade-up     { opacity: 0; transform: translateY(14px); animation: sovFadeUp var(--duration-slow) var(--ease-sov) forwards; }
+  .sov-fade-up--d1 { animation-delay: 80ms; }
+  .sov-fade-up--d2 { animation-delay: 160ms; }
+  .sov-fade-up--d3 { animation-delay: 240ms; }
+  .sov-fade-up--d4 { animation-delay: 320ms; }
+  @keyframes sovFadeUp { to{opacity:1; transform:translateY(0)} }
+
+  .sov-slide-in { animation: sovSlideIn var(--duration-base) var(--ease-sov); }
+  @keyframes sovSlideIn { from{transform:translateX(-12px);opacity:0} to{transform:translateX(0);opacity:1} }
+}
