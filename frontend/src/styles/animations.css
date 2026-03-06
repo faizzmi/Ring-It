@@ -1,0 +1,77 @@
+/* animations.css */
+@layer components {
+
+    /* ── Ambient orbs (reusable for any page bg) ── */
+    .sov-ambient { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .sov-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      animation: sovOrbFloat 14s ease-in-out infinite;
+    }
+    .sov-orb--1 { width: 50vw; height: 50vw; background: rgba(128,0,32,0.22); top: -12%; right: -8%; }
+    .sov-orb--2 { width: 38vw; height: 38vw; background: rgba(128,0,32,0.10); bottom: 10%; left: -6%; animation-duration: 18s; animation-direction: reverse; }
+    .sov-grid-overlay {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(224,224,224,0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(224,224,224,0.022) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 0%, transparent 75%);
+    }
+  
+    @keyframes sovOrbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      45%       { transform: translate(3%, 4%) scale(1.04); }
+      70%       { transform: translate(-2%, -2%) scale(0.97); }
+    }
+  
+    /* ── Pulse dot ── */
+    .sov-pulse {
+      width: 7px; height: 7px;
+      background: var(--ox);
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(128,0,32,0.9);
+      animation: sovPulse 2.5s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes sovPulse {
+      0%, 100% { box-shadow: 0 0 4px rgba(128,0,32,0.9); }
+      50%       { box-shadow: 0 0 14px rgba(128,0,32,1), 0 0 22px rgba(128,0,32,0.5); }
+    }
+  
+    /* ── Blink cursor ── */
+    .sov-blink { animation: sovBlink 1.1s step-end infinite; }
+    @keyframes sovBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  
+    /* ── Float tags ── */
+    .sov-float { animation: sovFloatY 5s ease-in-out infinite; }
+    .sov-float--slow { animation-duration: 7s; animation-direction: reverse; }
+    @keyframes sovFloatY {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-7px); }
+    }
+  
+    /* ── Fade in up (page transitions) ── */
+    .sov-fade-up {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: sovFadeUp var(--t-slow) var(--ease) forwards;
+    }
+    .sov-fade-up--d1 { animation-delay: 80ms; }
+    .sov-fade-up--d2 { animation-delay: 160ms; }
+    .sov-fade-up--d3 { animation-delay: 240ms; }
+    .sov-fade-up--d4 { animation-delay: 320ms; }
+    @keyframes sovFadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  
+    /* ── Slide in from left (side nav) ── */
+    .sov-slide-in {
+      animation: sovSlideIn var(--t-base) var(--ease);
+    }
+    @keyframes sovSlideIn {
+      from { transform: translateX(-12px); opacity: 0; }
+      to   { transform: translateX(0);     opacity: 1; }
+    }
+  }

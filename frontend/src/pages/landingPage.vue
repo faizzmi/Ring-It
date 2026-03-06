@@ -1,7 +1,7 @@
 <template>
   <div class="page-root">
 
-    <!-- AMBIENT — uses global sov-ambient classes -->
+    <!-- AMBIENT -->
     <div class="sov-ambient" aria-hidden="true">
       <div class="sov-orb sov-orb--1" />
       <div class="sov-orb sov-orb--2" />
@@ -22,7 +22,7 @@
           <a href="#features" class="sov-nav-link">Features</a>
           <a href="#ai"       class="sov-nav-link">Behavioral Brain</a>
           <a href="#compliance" class="sov-nav-link">Compliance</a>
-          <a href="#" class="sov-btn sov-btn--primary sov-btn--sm">Enter Vault →</a>
+          <RouterLink to="/login" class="sov-btn sov-btn--primary sov-btn--sm">Enter Vault →</RouterLink>
         </div>
         <button class="hamburger" @click="mobileOpen = !mobileOpen" :class="{ open: mobileOpen }">
           <span /><span /><span />
@@ -32,18 +32,15 @@
         <a href="#features"   class="mobile-link" @click="mobileOpen=false">Features</a>
         <a href="#ai"         class="mobile-link" @click="mobileOpen=false">Behavioral Brain</a>
         <a href="#compliance" class="mobile-link" @click="mobileOpen=false">Compliance</a>
-        <a href="#" class="sov-btn sov-btn--primary" style="text-align:center;margin-top:14px">Enter Vault →</a>
+        <RouterLink to="/login" class="sov-btn sov-btn--primary" style="text-align:center;margin-top:14px" @click="mobileOpen=false">Enter Vault →</RouterLink>
       </div>
     </nav>
 
-    <!-- ══════════════════════════════════════════
-         HERO
-    ══════════════════════════════════════════ -->
+    <!-- HERO -->
     <section class="hero">
       <div class="sov-container">
         <div class="hero-layout">
 
-          <!-- Copy -->
           <div class="hero-copy">
             <div class="eyebrow">
               <span class="sov-pulse" />
@@ -61,12 +58,12 @@
               <footer>— James Clear, Atomic Habits</footer>
             </blockquote>
 
-            <a href="#" class="sov-btn sov-btn--primary sov-btn--lg hero-cta">
+            <RouterLink to="/login" class="sov-btn sov-btn--primary sov-btn--lg hero-cta">
               Open the Vault
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
                 <path d="M2.5 6.5h8M6.5 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-            </a>
+            </RouterLink>
           </div>
 
           <!-- Dashboard mock -->
@@ -166,9 +163,7 @@
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════════
-         3 BEHAVIORAL LEVERS
-    ══════════════════════════════════════════ -->
+    <!-- 3 BEHAVIORAL LEVERS -->
     <section class="sov-section" id="features">
       <div class="sov-container">
         <div class="sec-head">
@@ -192,9 +187,7 @@
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════
-         KEY CAPABILITIES
-    ══════════════════════════════════════════ -->
+    <!-- KEY CAPABILITIES -->
     <section class="sov-section sov-section--alt">
       <div class="sov-container">
         <div class="sec-head">
@@ -219,9 +212,7 @@
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════
-         BEHAVIORAL BRAIN
-    ══════════════════════════════════════════ -->
+    <!-- BEHAVIORAL BRAIN -->
     <section class="sov-section" id="ai">
       <div class="sov-container">
         <div class="ai-layout">
@@ -300,9 +291,7 @@
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════
-         COMPLIANCE
-    ══════════════════════════════════════════ -->
+    <!-- COMPLIANCE -->
     <section class="sov-section sov-section--alt" id="compliance">
       <div class="sov-container">
         <div class="sec-head">
@@ -322,9 +311,7 @@
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════
-         CTA
-    ══════════════════════════════════════════ -->
+    <!-- CTA -->
     <section class="sov-section">
       <div class="sov-container">
         <div class="sov-card cta-card">
@@ -350,7 +337,12 @@
           </div>
           <div v-for="col in footerCols" :key="col.title" class="footer-col">
             <p class="footer-col-title t-mono">{{ col.title }}</p>
-            <a v-for="l in col.links" :key="l" href="#" class="footer-link">{{ l }}</a>
+            <button
+              v-for="l in col.links"
+              :key="l"
+              class="footer-link footer-link--btn"
+              @click="openModal(l)"
+            >{{ l }}</button>
           </div>
         </div>
         <div class="footer-bottom t-mono">
@@ -359,11 +351,49 @@
       </div>
     </footer>
 
+    <!-- ── MODALS ── -->
+    <teleport to="body">
+      <transition name="modal-fade">
+        <div v-if="activeModal" class="modal-backdrop" @click.self="activeModal = null">
+          <div class="modal-shell" role="dialog" :aria-label="activeModal.title">
+
+            <div class="modal-topbar">
+              <div class="modal-brand-row">
+                <span class="modal-dot" />
+                <span class="t-mono modal-overline">{{ activeModal.id }}</span>
+              </div>
+              <button class="modal-close" @click="activeModal = null" aria-label="Close">✕</button>
+            </div>
+
+            <h2 class="modal-title t-display">{{ activeModal.title }}</h2>
+            <p class="modal-sub t-mono">{{ activeModal.sub }}</p>
+
+            <div class="modal-body">
+              <div v-for="section in activeModal.sections" :key="section.heading" class="modal-section">
+                <div class="modal-sec-head">
+                  <span class="modal-sec-num t-mono">{{ section.num }}</span>
+                  <h3 class="modal-sec-title t-plat">{{ section.heading }}</h3>
+                </div>
+                <p class="t-body modal-sec-body">{{ section.body }}</p>
+              </div>
+            </div>
+
+            <div class="modal-footer-bar">
+              <span class="sov-chip sov-chip--green">Ring-It v1.0</span>
+              <span class="t-mono t-gun" style="font-size:9px">Sontiqo &amp; Co · 2026</span>
+            </div>
+
+          </div>
+        </div>
+      </transition>
+    </teleport>
+
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { RouterLink } from 'vue-router'
 
 const mobileOpen = ref(false)
 const scrolled    = ref(false)
@@ -399,7 +429,7 @@ const caps = [
     desc: 'Encrypted receipts with 7-year retention. Real-time cap tracking for 2026/2027 LHDN relief categories.',
     tags: ['LHDN 2026', '7yr Retention'] },
   { id: 'MOD-06', icon: '🕌', hi: false, title: 'EPF & Zakat',
-    desc: 'Internal EPF RIA benchmarking across 3 tiers (RM 390K / 650K / 1.3M). Zakat computed from Policy Config Nisab.',
+    desc: 'Internal EPF RIA benchmarking across 3 tiers (RM 390K / 650K / 1.3M).',
     tags: ['EPF RIA', 'Zakat', 'Internal'] },
   { id: 'MOD-07', icon: '🏛', hi: true,  title: 'Banking Readiness',
     desc: 'Real-time DSR calculator with Malaysian bank grading. CCRIS payment streak gamification. Snowball / Avalanche debt payoff toggle.',
@@ -434,13 +464,108 @@ const footerCols = [
   { title: '// LEGAL',      links: ['MIT License', 'Terms of Service', 'Risk Disclosure'] },
   { title: '// GOVERNANCE', links: ['Compliance Framework', 'Privacy Policy', 'PDPA Notice', 'Data Encryption'] },
 ]
+
+// ── MODAL ──
+interface ModalSection { num: string; heading: string; body: string }
+interface ModalContent { id: string; title: string; sub: string; sections: ModalSection[] }
+
+const activeModal = ref<ModalContent | null>(null)
+
+const modalContent: Record<string, ModalContent> = {
+  'MIT License': {
+    id: '// LEGAL · LIC-01',
+    title: 'MIT License',
+    sub: 'Open-source · Permissive · Free forever',
+    sections: [
+      { num: '§1', heading: 'Grant of Rights', body: 'Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files ("Ring-It"), to deal in the software without restriction — including the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the software — and to permit persons to whom the software is furnished to do so.' },
+      { num: '§2', heading: 'Conditions', body: 'The above copyright notice and this permission notice shall be included in all copies or substantial portions of the software. Attribution to Sontiqo & Co and Muhammad Faiz bin Azmi must be preserved in any redistribution.' },
+      { num: '§3', heading: 'Disclaimer', body: 'THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM OR IN CONNECTION WITH THE SOFTWARE.' },
+      { num: '§4', heading: 'Jurisdiction', body: 'This license shall be governed by and construed under the laws of Malaysia. Any disputes arising from this license shall be subject to the jurisdiction of Malaysian courts.' },
+    ],
+  },
+  'Terms of Service': {
+    id: '// LEGAL · TOS-01',
+    title: 'Terms of Service',
+    sub: 'Effective 1 January 2026 · Ring-It v1.0',
+    sections: [
+      { num: '§1', heading: 'Acceptance', body: 'By accessing or using Ring-It ("the App"), you agree to be bound by these Terms. If you do not agree, discontinue use immediately. These Terms form a binding legal agreement between you and Sontiqo & Co.' },
+      { num: '§2', heading: 'Financial Disclaimer', body: 'Ring-It is a personal finance management tool and does NOT constitute financial advice, investment advice, or professional consultation. All projections (e.g., 10-year compound estimates) are illustrative only. Always consult a licensed financial planner for investment decisions.' },
+      { num: '§3', heading: 'User Responsibilities', body: 'You are responsible for maintaining the accuracy of data you enter. Ring-It stores your financial data locally and encrypted. You must not use the App for any unlawful purpose or in violation of Malaysian law, including the PDPA 2010 (Act 709).' },
+      { num: '§4', heading: 'Modifications', body: 'Sontiqo & Co reserves the right to modify these Terms at any time. Continued use after modifications constitutes acceptance. Material changes will be notified via in-app notification at least 14 days in advance.' },
+      { num: '§5', heading: 'Termination', body: 'We reserve the right to terminate or suspend access for breach of these Terms. Upon termination, your data export will be made available for 30 days before permanent deletion, in compliance with PDPA obligations.' },
+    ],
+  },
+  'Risk Disclosure': {
+    id: '// LEGAL · RSK-01',
+    title: 'Risk Disclosure',
+    sub: 'Read carefully before using financial projections',
+    sections: [
+      { num: '§1', heading: 'Projection Accuracy', body: 'All compound growth projections displayed in Ring-It (default: 7% p.a.) are hypothetical and based on historical averages. Past performance of any asset class does not guarantee future results. Actual returns may be significantly higher or lower.' },
+      { num: '§2', heading: 'Exchange Rate Risk', body: 'Live exchange rates are sourced from third-party APIs and refreshed every 15 minutes. Rates displayed may differ from interbank rates. Foreign currency goals include a 2–5% volatility buffer, but this does not eliminate currency risk.' },
+      { num: '§3', heading: 'DSR & Credit Risk', body: "The Debt Service Ratio (DSR) calculator uses data you provide and BNM guidelines. Ring-It's credit readiness assessment is indicative only and does not guarantee loan approval or reflect actual bank underwriting criteria." },
+      { num: '§4', heading: 'Tax Guidance Limitation', body: "LHDN relief tracking is based on publicly available 2026/2027 LHDN guidelines. Tax law is subject to change. Ring-It's calculations do not constitute tax advice. Consult a licensed tax agent for official filings." },
+    ],
+  },
+  'Compliance Framework': {
+    id: '// GOVERNANCE · GOV-01',
+    title: 'Compliance Framework',
+    sub: 'Malaysian regulatory alignment · Ring-It v1.0',
+    sections: [
+      { num: '§1', heading: 'PDPA 2010 (Act 709)', body: "Ring-It is designed for full compliance with Malaysia's Personal Data Protection Act 2010. User financial data is processed only for the stated purpose of personal finance management. Data is encrypted at rest using AES-256 and never sold to third parties." },
+      { num: '§2', heading: 'BNM RMIT Guidelines', body: "Our financial security architecture aligns with Bank Negara Malaysia's Risk Management in Technology (RMIT) framework. This includes rate limiting on all API endpoints, audit trails for sensitive operations, and session management controls." },
+      { num: '§3', heading: 'LHDN Compliance', body: 'Receipt vault retention is set to 7 years in line with LHDN audit requirements. All relief category caps reflect the official 2026/2027 assessment year guidelines published by Lembaga Hasil Dalam Negeri Malaysia.' },
+      { num: '§4', heading: 'EPF Act 1991', body: "EPF RIA benchmark tiers (RM 390K / RM 650K / RM 1.3M) are sourced from EPF's Retirement Income Adequacy framework. Calculations are for self-assessment only and do not represent official EPF projections." },
+    ],
+  },
+  'Privacy Policy': {
+    id: '// GOVERNANCE · PRV-01',
+    title: 'Privacy Policy',
+    sub: 'How Ring-It handles your personal financial data',
+    sections: [
+      { num: '§1', heading: 'Data We Collect', body: "Ring-It collects financial data you voluntarily enter: account balances, transactions, income, expenses, and uploaded receipts. We do not collect biometric data, location data (beyond your stated currency region), or device identifiers beyond what is necessary for app function." },
+      { num: '§2', heading: 'How We Use Your Data', body: "Your data is used solely to power Ring-It's features: ledger tracking, budget calculations, DSR analysis, LHDN relief tracking, and EPF benchmarking. We do not use your data for advertising, profiling, or any purpose beyond the stated app function." },
+      { num: '§3', heading: 'Data Storage & Security', body: 'All data is encrypted at rest (AES-256) and in transit (TLS 1.3). Receipt vault data is retained for 7 years per LHDN requirements. Other data is retained for the duration of your account. You may export or delete your data at any time from Settings.' },
+      { num: '§4', heading: 'Third-Party Services', body: 'Ring-It uses a third-party exchange rate API for live FX data. Only your selected currency pairs are queried — no personal or financial data is transmitted. No other third-party data processors have access to your financial records.' },
+      { num: '§5', heading: 'Your Rights (PDPA)', body: 'Under PDPA 2010, you have the right to access, correct, and withdraw consent for processing of your personal data. To exercise these rights or submit a complaint, contact privacy@sontiqo.co. We will respond within 21 days as required by law.' },
+    ],
+  },
+  'PDPA Notice': {
+    id: '// GOVERNANCE · PDPA-01',
+    title: 'PDPA Notice',
+    sub: 'Personal Data Protection Act 2010 (Act 709) · Malaysia',
+    sections: [
+      { num: '§1', heading: 'Data Controller', body: 'The data controller for Ring-It is Sontiqo & Co, operated by Muhammad Faiz bin Azmi. For all data protection enquiries, contact: privacy@sontiqo.co or write to our registered address in Kuala Lumpur, Malaysia.' },
+      { num: '§2', heading: 'Purpose of Processing', body: 'Your personal and financial data is collected and processed for the purpose of providing personal finance management services through Ring-It. This includes ledger management, budgeting, tax relief tracking, and financial goal setting.' },
+      { num: '§3', heading: 'Consent', body: 'By creating a Ring-It account, you provide explicit consent for the processing described in this notice. You may withdraw consent at any time by deleting your account. Withdrawal of consent will not affect the lawfulness of processing prior to withdrawal.' },
+      { num: '§4', heading: 'Data Retention', body: 'Receipt and tax-related data is retained for 7 years as required by LHDN. All other personal data is retained for the duration of your account plus 90 days after account closure to allow for data export. Anonymised aggregate data may be retained indefinitely.' },
+      { num: '§5', heading: 'Cross-Border Transfer', body: 'Ring-It does not transfer your personal data outside of Malaysia except where necessary for exchange rate API queries (currency pair data only, no personal identifiers). All such transfers comply with PDPA Section 129 requirements.' },
+    ],
+  },
+  'Data Encryption': {
+    id: '// GOVERNANCE · SEC-01',
+    title: 'Data Encryption',
+    sub: 'Security architecture · Ring-It Vault',
+    sections: [
+      { num: '§1', heading: 'Encryption at Rest', body: 'All user financial data stored in the Ring-It Vault is encrypted using AES-256-GCM, the current gold standard for symmetric encryption. Encryption keys are derived using PBKDF2 with a unique salt per user, ensuring no two users share encryption parameters.' },
+      { num: '§2', heading: 'Encryption in Transit', body: 'All data transmitted between your device and Ring-It servers uses TLS 1.3 with perfect forward secrecy (PFS). Older TLS versions (1.0, 1.1) are explicitly disabled. Certificate pinning is enforced on mobile clients to prevent MITM attacks.' },
+      { num: '§3', heading: 'Receipt Vault Security', body: "Uploaded receipts in the LHDN vault are stored with client-side encryption before upload. This means even Ring-It's servers cannot read the raw content of your receipts — only you hold the decryption key derived from your account credentials." },
+      { num: '§4', heading: 'BNM RMIT Alignment', body: "Our security posture aligns with Bank Negara Malaysia's RMIT framework. This includes: API rate limiting to prevent brute force, immutable audit logs for all financial mutations, session timeout after 15 minutes of inactivity, and regular penetration testing." },
+    ],
+  },
+}
+
+function openModal(label: string) {
+  const content = modalContent[label]
+  if (content) activeModal.value = content
+}
+
+const onKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape') activeModal.value = null
+}
+onMounted(()   => window.addEventListener('keydown', onKeydown))
+onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 </script>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SCOPED STYLES — page-specific layout ONLY.
-     Do NOT add colors, fonts, or shared patterns here.
-     All shared styles live in src/styles/main.scss.
-════════════════════════════════════════════════════════════ -->
 <style scoped>
 .page-root { position: relative; min-height: 100vh; overflow-x: hidden; }
 
@@ -601,5 +726,167 @@ const footerCols = [
 .footer-col-title { font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(224,224,224,.5); margin-bottom: 2px; }
 .footer-link { font-size: .78rem; color: rgba(117,117,117,.7); transition: color .18s; }
 .footer-link:hover { color: rgba(224,224,224,.9); }
+.footer-link--btn { background: none; border: none; padding: 0; cursor: pointer; text-align: left; font-family: inherit; }
 .footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding-top: 22px; border-top: 1px solid rgba(224,224,224,.05); font-size: .7rem; color: rgba(117,117,117,.4); }
+
+/* ── MODAL BACKDROP ── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(4, 4, 6, 0.72);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* ── MODAL SHELL ── */
+.modal-shell {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  max-height: 85svh;
+  overflow-y: auto;
+  background: rgba(12, 12, 14, 0.92);
+  backdrop-filter: blur(40px) saturate(2);
+  -webkit-backdrop-filter: blur(40px) saturate(2);
+  border: 1px solid rgba(224, 224, 224, 0.11);
+  border-radius: 18px;
+  padding: 24px 28px 28px;
+  box-shadow:
+    0 60px 120px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 1px 0 rgba(255, 255, 255, 0.14) inset;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(224,224,224,0.08) transparent;
+}
+.modal-shell::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2) 50%, transparent);
+  border-radius: 18px 18px 0 0;
+  pointer-events: none;
+}
+
+/* ── MODAL TOP BAR ── */
+.modal-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.modal-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.modal-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--color-ox);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(128, 0, 32, 0.9);
+  flex-shrink: 0;
+}
+.modal-overline {
+  font-size: 8.5px;
+  letter-spacing: 2.5px;
+  color: var(--color-gun);
+}
+.modal-close {
+  width: 30px;
+  height: 30px;
+  background: rgba(224, 224, 224, 0.04);
+  border: 1px solid rgba(224, 224, 224, 0.08);
+  border-radius: 8px;
+  color: rgba(224, 224, 224, 0.45);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  flex-shrink: 0;
+}
+.modal-close:hover {
+  background: rgba(128, 0, 32, 0.15);
+  color: rgba(224, 224, 224, 0.9);
+  border-color: rgba(128, 0, 32, 0.3);
+}
+
+/* ── MODAL HEADER ── */
+.modal-title {
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  margin-bottom: 5px;
+}
+.modal-sub {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--color-gun);
+  margin-bottom: 24px;
+}
+
+/* ── MODAL BODY ── */
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.modal-section {
+  padding: 15px 16px;
+  background: rgba(8, 8, 8, 0.5);
+  border: 1px solid rgba(224, 224, 224, 0.06);
+  border-radius: 10px;
+  transition: border-color 0.2s;
+}
+.modal-section:hover {
+  border-color: rgba(224, 224, 224, 0.11);
+}
+.modal-sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  margin-bottom: 8px;
+}
+.modal-sec-num {
+  font-size: 9px;
+  color: var(--color-ox);
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+.modal-sec-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-plat);
+}
+.modal-sec-body {
+  font-size: 0.76rem;
+  line-height: 1.72;
+  color: rgba(117, 117, 117, 0.85);
+}
+
+/* ── MODAL FOOTER BAR ── */
+.modal-footer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 18px;
+  border-top: 1px solid rgba(224, 224, 224, 0.06);
+}
+
+/* ── TRANSITIONS ── */
+.modal-fade-enter-active { transition: opacity 0.22s ease; }
+.modal-fade-leave-active { transition: opacity 0.18s ease; }
+.modal-fade-enter-active .modal-shell { transition: transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.22s ease; }
+.modal-fade-leave-active .modal-shell { transition: transform 0.18s ease, opacity 0.18s ease; }
+.modal-fade-enter-from,
+.modal-fade-leave-to { opacity: 0; }
+.modal-fade-enter-from .modal-shell { transform: scale(0.95) translateY(14px); opacity: 0; }
+.modal-fade-leave-to .modal-shell   { transform: scale(0.97) translateY(6px);  opacity: 0; }
 </style>
