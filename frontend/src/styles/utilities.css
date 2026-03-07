@@ -1,60 +1,6 @@
-/* utilities.css */
 @layer utilities {
-    /* Spacing */
-    .mt-auto { margin-top: auto; }
-    .flex     { display: flex; }
-    .flex-col { display: flex; flex-direction: column; }
-    .items-center  { align-items: center; }
-    .items-start   { align-items: flex-start; }
-    .justify-between { justify-content: space-between; }
-    .justify-center  { justify-content: center; }
-    .gap-1 { gap: var(--sp-1); } .gap-2 { gap: var(--sp-2); }
-    .gap-3 { gap: var(--sp-3); } .gap-4 { gap: var(--sp-4); }
-    .gap-6 { gap: var(--sp-6); } .gap-8 { gap: var(--sp-8); }
-    .w-full  { width: 100%; }
-    .h-full  { height: 100%; }
-    .relative { position: relative; }
-    .overflow-hidden { overflow: hidden; }
-    .z-1 { z-index: 1; }
-  
-    /* Text helpers */
-    .truncate    { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .text-right  { text-align: right; }
-    .text-center { text-align: center; }
-  
-    /* Vault-specific amount display */
-    .sov-amount {
-      font-family: var(--display);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1;
-      color: var(--plat);
-    }
-    .sov-amount--ccy {
-      font-family: var(--mono);
-      font-size: 0.6em;
-      color: var(--gun);
-      vertical-align: 0.15em;
-      margin-right: 3px;
-    }
-    .sov-amount--positive { color: var(--grn); }
-    .sov-amount--negative { color: #ef5350; }
-  
-    /* DSR color grades */
-    .dsr-green  { color: var(--grn); }
-    .dsr-yellow { color: var(--amb); }
-    .dsr-red    { color: var(--red); }
-  
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: var(--iron); }
-    ::-webkit-scrollbar-thumb { background: var(--iron-3); border-radius: 2px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--gun); }
-  
-    /* Focus ring */
-    :focus-visible {
-      outline: 1.5px solid var(--ox);
-      outline-offset: 3px;
-      border-radius: 3px;
-    }
-  }
+  .truncate  { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .text-right  { text-align: right; }
+  .text-center { text-align: center; }
+  .mt-auto  { margin-top: auto; }
+}

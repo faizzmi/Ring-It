@@ -1,68 +1,24 @@
-/* tailwind.css */
 @import "tailwindcss/theme" layer(tailwind.theme);
 @import "tailwindcss/utilities" layer(tailwind.utilities);
-
 @config "../../tailwind.config.ts";
-
-/* ════════════════════════════════════════════════
-   SOVEREIGN DESIGN TOKENS
-   Ring-It · Obsidian Vault · Oxblood Ledger
-════════════════════════════════════════════════ */
 @theme {
-
-  /* ── Fonts ── */
-  --font-heading: "Syne", sans-serif;
-  --font-body:    "DM Sans", sans-serif;
-  --font-mono:    "DM Mono", monospace;
-
-  /* ── Sovereign Color Palette ── */
+  --font-heading: var(--font-heading);
+  --font-body:  var(--font-body);
+  --font-mono:  var(--font-mono);
   --color-background: rgb(var(--v-theme-background));
-  --color-surface:    rgb(var(--v-theme-surface));
-  --color-primary:    rgb(var(--v-theme-primary));
+  --color-surface:  rgb(var(--v-theme-surface));
+  --color-primary:  rgb(var(--v-theme-primary));
   --color-secondary:  rgb(var(--v-theme-secondary));
-  --color-accent:     rgb(var(--v-theme-accent));
-  --color-success:    rgb(var(--v-theme-success));
-  --color-warning:    rgb(var(--v-theme-warning));
-  --color-error:      rgb(var(--v-theme-error));
-  --color-info:       rgb(var(--v-theme-info));
-
-  /* ── Raw Sovereign Tokens ── */
-  --color-void:    #080808;
-  --color-iron:    #121214;
-  --color-iron-2:  #1A1A1E;
-  --color-iron-3:  #222226;
-  --color-ox:      #800020;
-  --color-plat:    #E0E0E0;
-  --color-gun:     #757575;
-  --color-grn:     #4CAF50;
-  --color-red:     #B00020;
-  --color-amb:     #FB8C00;
-
-  /* ── Opacity / Glass variants ── */
-  --color-ox-lo:    rgba(128, 0, 32, 0.10);
-  --color-ox-md:    rgba(128, 0, 32, 0.22);
-  --color-ox-hi:    rgba(128, 0, 32, 0.40);
-  --color-grn-lo:   rgba(76, 175, 80, 0.10);
-  --color-red-lo:   rgba(176, 0, 32, 0.10);
-  --color-amb-lo:   rgba(251, 140, 0, 0.10);
-  --color-glass-bg: rgba(18, 18, 20, 0.60);
-  --color-glass-bo: rgba(224, 224, 224, 0.07);
-
-  /* ── Border Radius ── */
-  --radius-xs: 6px;
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 22px;
-  --radius-xl: 32px;
-
-  /* ── Transitions ── */
-  --ease-sov:       cubic-bezier(0.22, 1, 0.36, 1);
-  --duration-fast:  150ms;
-  --duration-base:  220ms;
-  --duration-slow:  380ms;
-
-  /* ── Breakpoints (match Vuetify + settings.scss) ── */
-  --breakpoint-*:   initial;
+  --color-accent:  rgb(var(--v-theme-accent));
+  --color-success:  rgb(var(--v-theme-success));
+  --color-warning:  rgb(var(--v-theme-warning));
+  --color-error:  rgb(var(--v-theme-error));
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --breakpoint-*:  initial;
   --breakpoint-xs:  0px;
   --breakpoint-sm:  600px;
   --breakpoint-md:  840px;
@@ -70,29 +26,23 @@
   --breakpoint-xl:  1545px;
   --breakpoint-xxl: 2138px;
 }
-
 @custom-variant light (&:where(.v-theme--light, .v-theme--light *));
 @custom-variant dark  (&:where(.v-theme--dark,  .v-theme--dark  *));
-
-@utility rounded-0   { border-radius: 0 }
-@utility rounded-xs  { border-radius: var(--radius-xs) }
-@utility rounded-sm  { border-radius: var(--radius-sm) }
-@utility rounded-md  { border-radius: var(--radius-md) }
-@utility rounded-lg  { border-radius: var(--radius-lg) }
-@utility rounded-xl  { border-radius: var(--radius-xl) }
-
+@utility rounded-0  { border-radius: 0 }
+@utility rounded-xs { border-radius: var(--radius-xs) }
+@utility rounded-sm { border-radius: var(--radius-sm) }
+@utility rounded-md { border-radius: var(--radius-md) }
+@utility rounded-lg { border-radius: var(--radius-lg) }
+@utility rounded-xl { border-radius: var(--radius-xl) }
 @utility rounded-t-sm { border-top-left-radius: var(--radius-sm); border-top-right-radius: var(--radius-sm) }
 @utility rounded-t-lg { border-top-left-radius: var(--radius-lg); border-top-right-radius: var(--radius-lg) }
 @utility rounded-t-xl { border-top-left-radius: var(--radius-xl); border-top-right-radius: var(--radius-xl) }
-
 @utility rounded-b-sm { border-bottom-left-radius: var(--radius-sm); border-bottom-right-radius: var(--radius-sm) }
 @utility rounded-b-lg { border-bottom-left-radius: var(--radius-lg); border-bottom-right-radius: var(--radius-lg) }
 @utility rounded-b-xl { border-bottom-left-radius: var(--radius-xl); border-bottom-right-radius: var(--radius-xl) }
-
 @utility rounded-s-sm { border-start-start-radius: var(--radius-sm); border-end-start-radius: var(--radius-sm) }
 @utility rounded-s-lg { border-start-start-radius: var(--radius-lg); border-end-start-radius: var(--radius-lg) }
 @utility rounded-s-xl { border-start-start-radius: var(--radius-xl); border-end-start-radius: var(--radius-xl) }
-
 @utility rounded-e-sm { border-start-end-radius: var(--radius-sm); border-end-end-radius: var(--radius-sm) }
 @utility rounded-e-lg { border-start-end-radius: var(--radius-lg); border-end-end-radius: var(--radius-lg) }
 @utility rounded-e-xl { border-start-end-radius: var(--radius-xl); border-end-end-radius: var(--radius-xl) }

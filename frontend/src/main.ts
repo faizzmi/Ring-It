@@ -16,7 +16,6 @@ import App from './App.vue'
 // Styles
 import 'unfonts.css'
 import './styles/tailwind.css'
-import './styles/main.scss'
 import './styles/main.css'
 
 const app = createApp(App)

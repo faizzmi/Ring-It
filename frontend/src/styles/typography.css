@@ -1,104 +1,71 @@
-/* typography.css */
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
-
 @layer sovereign {
   :root {
-    /* ── Sovereign Design Tokens ── */
-    --void:     #080808;
-    --iron:     #121214;
-    --iron-2:   #1A1A1E;
-    --iron-3:   #222226;
-    --ox:       #800020;
-    --ox-lo:    rgba(128, 0, 32, 0.10);
-    --ox-md:    rgba(128, 0, 32, 0.22);
-    --ox-hi:    rgba(128, 0, 32, 0.40);
-    --plat:     #E0E0E0;
-    --gun:      #757575;
-    --grn:      #4CAF50;
-    --red:      #B00020;
-    --amb:      #FB8C00;
-    --grn-lo:   rgba(76, 175, 80, 0.10);
-    --red-lo:   rgba(176, 0, 32, 0.10);
-    --amb-lo:   rgba(251, 140, 0, 0.10);
-
-    /* ── Glass Surface ── */
-    --glass-bg: rgba(18, 18, 20, 0.60);
-    --glass-bo: rgba(224, 224, 224, 0.07);
-    --glass-hi: rgba(255, 255, 255, 0.035);
-
-    /* ── Radius ── */
-    --r-xs: 6px;
-    --r-sm: 10px;
-    --r-md: 16px;
-    --r-lg: 22px;
-    --r-xl: 32px;
-
-    /* ── Typography ── */
-    --mono:    'DM Mono', monospace;
-    --display: 'Syne', sans-serif;
-    --body:    'DM Sans', sans-serif;
-
-    /* ── Spacing scale ── */
+    --font-heading: 'Syne', sans-serif;
+    --font-body:  'DM Sans', sans-serif;
+    --font-mono:  'DM Mono', monospace;
+    --color-void:  #080808;
+    --color-iron:  #121214;
+    --color-iron-2:  #1A1A1E;
+    --color-iron-3:  #222226;
+    --color-ox:  #800020;
+    --color-plat:  #E0E0E0;
+    --color-gun:  #757575;
+    --color-grn:  #4CAF50;
+    --color-red:  #B00020;
+    --color-amb:  #FB8C00;
+    --color-ox-lo:  rgba(128, 0, 32, 0.10);
+    --color-ox-md:  rgba(128, 0, 32, 0.22);
+    --color-ox-hi:  rgba(128, 0, 32, 0.40);
+    --color-grn-lo:  rgba(76, 175, 80, 0.10);
+    --color-red-lo:  rgba(176, 0, 32, 0.10);
+    --color-amb-lo:  rgba(251, 140, 0, 0.10);
+    --color-glass-bg: rgba(18, 18, 20, 0.60);
+    --color-glass-bo: rgba(224, 224, 224, 0.07);
+    --color-glass-hi: rgba(255, 255, 255, 0.035);
+    --radius-xs: 6px;
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 22px;
+    --radius-xl: 32px;
+    --ease:  cubic-bezier(0.22, 1, 0.36, 1);
+    --duration-fast: 150ms;
+    --duration-base: 220ms;
+    --duration-slow: 380ms;
     --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
-    --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px;
+    --sp-5: 20px; --sp-6: 24px;  --sp-8: 32px; --sp-10: 40px;
     --sp-12: 48px; --sp-16: 64px; --sp-20: 80px;
-
-    /* ── Transitions ── */
-    --ease: cubic-bezier(0.22, 1, 0.36, 1);
-    --t-fast: 150ms; --t-base: 220ms; --t-slow: 380ms;
   }
-
   *, *::before, *::after { box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
-
   body {
-    background: var(--void);
-    color: var(--plat);
-    font-family: var(--body);
+    background: var(--color-void);
+    color: var(--color-plat);
+    font-family: var(--font-body);
     font-size: 14px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-
   a { text-decoration: none; color: inherit; }
   p, h1, h2, h3, h4, h5, h6 { margin: 0; }
   button { border: none; background: none; cursor: pointer; padding: 0; font-family: inherit; }
   input, textarea, select { font-family: inherit; }
   img { display: block; max-width: 100%; }
-
-  /* ── Sovereign type scale ── */
-  .t-display {
-    font-family: var(--display);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.06;
-    color: var(--plat);
-  }
-  .t-mono {
-    font-family: var(--mono);
-    font-weight: 400;
-  }
-  .t-overline {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--ox);
-  }
-  .t-label {
-    font-family: var(--mono);
-    font-size: 8px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gun);
-  }
-  .t-body { font-family: var(--body); color: var(--gun); line-height: 1.75; }
-  .t-accent { color: var(--ox); }
-  .t-plat   { color: var(--plat); }
-  .t-gun    { color: var(--gun); }
-  .t-green  { color: var(--grn); }
-  .t-red    { color: #ef5350; }
-  .t-amber  { color: var(--amb); }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: var(--color-iron); }
+  ::-webkit-scrollbar-thumb { background: var(--color-iron-3); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-gun); }
+  :focus-visible { outline: 1.5px solid var(--color-ox); outline-offset: 3px; border-radius: 3px; }
+  .t-display  { font-family: var(--font-heading); font-weight: 800; letter-spacing: -0.03em; line-height: 1.06; color: var(--color-plat); }
+  .t-mono  { font-family: var(--font-mono); }
+  .t-overline { font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--color-ox); }
+  .t-label  { font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--color-gun); }
+  .t-body  { font-family: var(--font-body); color: var(--color-gun); line-height: 1.75; }
+  .t-accent  { color: var(--color-ox); }
+  .t-plat  { color: var(--color-plat); }
+  .t-gun  { color: var(--color-gun); }
+  .t-green  { color: var(--color-grn); }
+  .t-red  { color: #ef5350; }
+  .t-amber  { color: var(--color-amb); }
 }
