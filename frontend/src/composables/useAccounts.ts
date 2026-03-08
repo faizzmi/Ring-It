@@ -1,22 +1,12 @@
 /**
  * composables/useAccount.ts
- *
- * Centralised state + API layer for the Accounts resource.
- *
- * Design decisions:
- * ─ Uses the same raw fetch() + Bearer pattern as useAuth.ts.
- *   No Axios dependency — keeps the auth strategy consistent.
- * ─ Module-level refs so state is shared as a singleton across
- *   every component that calls useAccount() in the same app session.
  */
 
 import { ref, computed } from 'vue'
 import { useAuth } from './useAuth'
 
-// ── Constants ─────────────────────────────────────────────────────────────────
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000/api/v1'
 
-// ── Types ─────────────────────────────────────────────────────────────────────
 export type AccountType  = 'bank' | 'ewallet' | 'cash'
 export type CurrencyCode = 'MYR' | 'USD' | 'EUR' | 'SGD' | 'GBP'
 
@@ -59,6 +49,7 @@ export interface IAccountListResponse {
   total:         number
   active_count:  number
   total_balance: number
+  has_more:      boolean   // true when limit was applied and more accounts exist
 }
 
 export interface IDeleteAccountResponse {
@@ -67,7 +58,6 @@ export interface IDeleteAccountResponse {
   message:    string
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
 function normalise(a: IAccount): IAccount {
   return { ...a, balance: Number(a.balance) }
 }
@@ -78,8 +68,8 @@ const loading      = ref(false)
 const error        = ref<string | null>(null)
 const totalBalance = ref<number>(0)
 const activeCount  = ref<number>(0)
+const hasMore      = ref<boolean>(false)  // server says there are more accounts than returned
 
-// ── Internal fetch helper ─────────────────────────────────────────────────────
 async function accountFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
   const { token } = useAuth()
   const headers: Record<string, string> = {
@@ -100,22 +90,37 @@ async function accountFetch<T>(path: string, options: RequestInit = {}): Promise
   return res.json() as Promise<T>
 }
 
-// ── Composable ────────────────────────────────────────────────────────────────
 export function useAccount() {
   const activeAccounts  = computed(() => accounts.value.filter(a => a.is_active))
   const bankAccounts    = computed(() => activeAccounts.value.filter(a => a.account_type === 'bank'))
   const ewalletAccounts = computed(() => activeAccounts.value.filter(a => a.account_type === 'ewallet'))
   const cashAccounts    = computed(() => activeAccounts.value.filter(a => a.account_type === 'cash'))
 
-  async function fetchAccounts(includeInactive = false): Promise<void> {
+  // True when the last fetchAccounts call used a limit and more accounts exist on the server
+  const hasMoreAccounts = computed(() => hasMore.value)
+
+  /**
+   * Fetch accounts from the server.
+   *
+   * @param limit  Optional max number of accounts to return in `items`.
+   *               The server still returns the real `active_count` and sets
+   *               `has_more = true` when the result was truncated.
+   *               Pass `undefined` (default) to fetch all accounts.
+   * @param includeInactive  Include soft-deleted accounts.
+   */
+  async function fetchAccounts(limit?: number, includeInactive = false): Promise<void> {
     loading.value = true
     error.value   = null
     try {
-      const params = includeInactive ? '?include_inactive=true' : ''
-      const data   = await accountFetch<IAccountListResponse>(`/accounts${params}`)
+      const params = new URLSearchParams()
+      if (includeInactive) params.set('include_inactive', 'true')
+      if (limit !== undefined) params.set('limit', String(limit))
+      const qs   = params.toString() ? `?${params.toString()}` : ''
+      const data = await accountFetch<IAccountListResponse>(`/accounts${qs}`)
       accounts.value     = data.items.map(normalise)
       totalBalance.value = Number(data.total_balance)
       activeCount.value  = data.active_count
+      hasMore.value      = data.has_more
     } catch (e: unknown) {
       error.value = e instanceof Error ? e.message : 'Failed to load accounts.'
     } finally {
@@ -176,6 +181,7 @@ export function useAccount() {
     error,
     totalBalance,
     activeCount,
+    hasMoreAccounts,
     activeAccounts,
     bankAccounts,
     ewalletAccounts,

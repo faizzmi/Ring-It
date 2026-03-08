@@ -3,6 +3,7 @@ app/api/v1/accounts.py
 FastAPI route handlers for the /api/v1/accounts resource.
 """
 import uuid
+from typing import Optional
 
 from fastapi import APIRouter, Body, Depends, Query, Request, status
 from starlette.responses import Response
@@ -34,11 +35,17 @@ async def list_accounts(
     request: Request,
     response: Response,
     include_inactive: bool = Query(default=False),
+    limit: Optional[int] = Query(default=None, ge=1, le=100, description="Max accounts to return. Total and has_more always reflect the full count."),
     service: AccountService = Depends(get_account_service),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> AccountListResponse:
-    return await service.list_accounts(db, user_id=current_user.id, include_inactive=include_inactive)
+    return await service.list_accounts(
+        db,
+        user_id=current_user.id,
+        include_inactive=include_inactive,
+        limit=limit,
+    )
 
 
 @router.post("", response_model=AccountResponse, status_code=status.HTTP_201_CREATED, summary="Create a new account.")

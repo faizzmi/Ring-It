@@ -151,3 +151,10 @@ class DeleteAccountResponse(BaseModel):
     deleted: bool
     account_id: uuid.UUID
     message: str
+
+class AccountListResponse(BaseModel):
+    items:         list[AccountResponse]
+    total:         int
+    active_count:  int
+    total_balance: Decimal
+    has_more:      bool = False

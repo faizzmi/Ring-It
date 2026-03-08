@@ -14,6 +14,7 @@ const sovereign: ThemeDefinition = {
     success:  '#4CAF50',
     warning:  '#FB8C00',
     info:  '#2196F3',
+    caution: '#FBC02D'
   },
 }
 export default createVuetify({
